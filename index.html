@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="zalo-platform-site-verification" content="VVY5TVlxB70BvVids-WXAXptWWRmWLHTDJSt" />
+  <meta charset="UTF-8">
+  <title>Đặt lịch</title>
+  <script src="https://sp.zalo.me/plugins/sdk.js"></script>
+</head>
+<body>
+  <h3>Đặt lịch làm việc</h3>
+  <form id="form">
+    <input type="text" id="employee" placeholder="Nhân viên"><br>
+    <input type="text" id="customer" placeholder="Khách hàng"><br>
+    <input type="date" id="date"><br>
+    <input type="time" id="time"><br>
+    <button type="submit">Đặt lịch</button>
+  </form>
+
+  <script>
+    let zaloUserId = "";
+
+    window.onload = function () {
+      // Lấy thông tin người dùng từ Zalo
+      if (window.ZaloSocialSDK) {
+        ZaloSocialSDK.getLoginStatus(function (response) {
+          if (response.status === 'connected') {
+            zaloUserId = response.userId;
+          }
+        });
+      }
+
+      document.getElementById('form').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const data = {
+          employee: document.getElementById('employee').value,
+          customer: document.getElementById('customer').value,
+          date: document.getElementById('date').value,
+          time: document.getElementById('time').value,
+          zaloId: zaloUserId
+        };
+
+        fetch('https://script.google.com/macros/s/AKfycbzpA5jFmjWDqG8-GKvOBOX4clHlFJ4KAfDgBPt7VHfa0uZkNv6lqacyHKylCnUgwAiEyA/exec', {
+          method: 'POST',
+          body: JSON.stringify(data),
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }).then(res => res.text()).then(alert);
+      });
+    };
+  </script>
+</body>
+</html>
